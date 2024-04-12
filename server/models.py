@@ -15,8 +15,8 @@ class Venue(db.Model, SerializerMixin):
     name = db.Column(db.String)
     address = db.Column(db.String)
 
-    weddings = db.relationship('Wedding', back_populates='venue') 
-
+    #relationship
+    weddings = db.relationship('Wedding', back_populates='venue')#a venue can have multiple weddings. Wedding only has 1 venue
 
     def __repr__(self):
         return f"<Restaurant {self.name}>"
@@ -31,27 +31,31 @@ class Wedding(db.Model, SerializerMixin):
     date = db.Column(db.DateTime)
     venue_id=db.Column(db.Integer, db.ForeignKey('venues.id'))
 
+    #relationship
     invites = db.relationship('Invite', back_populates='wedding')
-    venue = db.relationship('Venue', back_populates='weddings') #a venue can have muliple weddings. Wedding only has 1 venue
+    venue = db.relationship('Venue', back_populates='weddings') #a venue can have multiple weddings. Wedding only has 1 venue
 
+    #serialization
     serialize_rules = ['-invites.wedding']
 
     def __repr__(self):
         return f"<Wedding {self.food}, {self.entertainment}, {self.date}>"
     
 #the Host is the organizer or the user that signs up on the site
-#to create a wedding.
+#to create a wedding or to be a guest.
 class Host(db.Model, SerializerMixin):
     __tablename__ = 'hosts'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
+    #relationship
     invites = db.relationship('Invite', back_populates='host', cascade='all, delete-orphan')
     #cascade delete deletes everything associated with a host
     #if a host is deleted. A wedding cannot exist without a host, and invite. However, a host can exist without 
     #wedding and invite. 
 
+    #serialization
     serialize_rules = ['-invites.host']
 
     def __repr__(self):
@@ -67,9 +71,11 @@ class Invite(db.Model, SerializerMixin):
     wedding_id = db.Column(db.Integer, db.ForeignKey('weddings.id'))
     host_id = db.Column(db.Integer, db.ForeignKey('hosts.id'))
 
+    #relationship
     host = db.relationship('Host', back_populates='invites')
     wedding = db.relationship('Wedding', back_populates='invites')
 
+    #serialization
     serialize_rules = ['-host.invites', '-wedding.invites']
 
     def __repr__(self):
