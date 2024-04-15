@@ -14,41 +14,38 @@ from models import Venue, Wedding, Host, Invite
 
 # Views go here!
 
-# Venue Routes
-@app.route('/venues', methods=['GET', 'POST'])
+# Venue Routes *
+@app.route('/venues')
 def venue_list():
-    if request.method == 'GET':
-        all_venues = []
-        for location in Venue.query.all():
-            all_venues.append(location.to_dict())
-        return all_venues, 200
+    venues = Venue.query.all()
+    return [venue.to_dict(rules=['-weddings']) for venue in venues], 200
+
+
+
+    # if request.method == 'GET':
+    #     all_venues = [location.to_dict(rules=['-invites']) for location in Venue.query.all()]
+        
+    #     return all_venues, 200
     
-    elif request.method == 'POST':
-        json_data = request.get_json()
-        new_venue = Venue()
-        for key, value in json_data.items():
-            setattr(new_venue, key, value)
+    # elif request.method == 'POST':
+    #     json_data = request.get_json()
+    #     new_venue = Venue()
+    #     for key, value in json_data.items():
+    #         setattr(new_venue, key, value)
 
-        db.session.add(new_venue)
-        db.session.commit()
+    #     db.session.add(new_venue)
+    #     db.session.commit()
 
-        return new_venue.to_dict(), 201
+    #     return new_venue.to_dict(), 201
 
-@app.route('/venues/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+@app.route('/venues/<int:id>', methods=['GET', 'DELETE'])
 def venue_detail(id):
     venue_detail = Venue.query.filter(Venue.id == id).first()
+    if venue_detail is None:
+        return 'venue not found', 404
+
     if request.method == 'GET':
-        return venue_detail.to_dict(), 200
-    
-    elif request.method == 'PATCH':
-        json_data = request.get_json()
-        if 'venue_id' in json_data:  #venue_id IS pointing at models.py
-            venue_detail.venue_id = json_data.get('venue_id') # in this line I am accessing the venueId key in models
-
-            db.session.add(venue_detail)
-            db.session.commit()
-
-            return venue_detail.to_dict(), 200
+        return venue_detail.to_dict(rules=['-weddings']), 200
         
     elif request.method == "DELETE":
         db.session.delete(venue_detail)
@@ -58,18 +55,12 @@ def venue_detail(id):
     
     
  # Wedding Routes
-@app.route('/weddings', methods=['GET', 'POST'])
+@app.route('/weddings', methods=['GET'])
 def wedding_list():
-    if request.method == 'GET':
-        all_weddings = [wedding.to_dict() for wedding in Wedding.query.all()]
-        return all_weddings, 200
-    
-    elif request.method == 'POST':
-        json_data = request.get_json() 
-        new_wedding = Wedding(**json_data) #whats the asterik read up
-        db.session.add(new_wedding)
-        db.session.commit()
-        return new_wedding.to_dict(), 201
+    weddings = Wedding.query.all()
+    request.method == 'GET'
+    return [wedding.to_dict(rules=['-venue', '-invites']) for wedding in weddings], 200
+   
 
 @app.route('/weddings/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 def wedding_detail(id):
@@ -96,9 +87,11 @@ def wedding_detail(id):
 # Invite Routes
 @app.route('/invites', methods=['GET', 'POST'])
 def invite_list():
+    if invite_list is None:
+        return 'Guest not found', 404
+    invites=Invite.query.all()
     if request.method == 'GET':
-        all_invites = [invite.to_dict() for invite in Invite.query.all()]
-        return all_invites, 200
+        return [invite.to_dict(rules=['-wedding', '-host']) for invite in invites], 200
     
     elif request.method == 'POST':
         json_data = request.get_json()
@@ -111,7 +104,7 @@ def invite_list():
 def invite_detail(id):
     invite_detail = Invite.query.get(id)
     if not invite_detail:
-        return {}, 404
+        return "Guest Not Found", 404
     
     if request.method == 'GET':
         return invite_detail.to_dict(), 200

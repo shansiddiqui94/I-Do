@@ -1,8 +1,8 @@
-"""updated venue and wedding classes
+"""initial migration
 
-Revision ID: 7b4c7bca2d65
-Revises: b1bbe4dd3cd6
-Create Date: 2024-04-12 13:44:44.230433
+Revision ID: 0d2ecdf4d45f
+Revises: 
+Create Date: 2024-04-15 12:55:18.035958
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7b4c7bca2d65'
-down_revision = 'b1bbe4dd3cd6'
+revision = '0d2ecdf4d45f'
+down_revision = None
 branch_labels = None
 depends_on = None
 
