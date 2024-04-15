@@ -9,15 +9,15 @@ Browse through a curated selection of exquisite venues to host your wedding cere
 Choose your ideal wedding date with ease using our intuitive calendar feature. Check availability at your preferred venues and plan your wedding day with confidence.
 
 3. Menu Customization
-Personalize your wedding menu to delight your guests with a culinary experience tailored to your tastes. Explore a variety of menu options, including Caribbean, American, Desi, vegetarian, and more.
+Personalize your wedding menu to delight your guests with a culinary experience tailored to your tastes. Explore a variety of menu options, including Caribbean, American, vegetarian, and more.
 
-4. Entertainment Options
+1. Entertainment Options
 Enhance your celebration with entertainment choices that reflect your unique style and personality. From live bands and DJs to fire shows, dancers, and singers, I-DO offers a wide range of entertainment options to keep your guests entertained throughout the event.
 
-5. Guest List Management
+1. Guest List Management
 Effortlessly create and manage your guest list with I-DO's intuitive platform. Invite your loved ones to share in your joy and specify any preferences or restrictions for attendees.
 
-6. User Authentication
+1. User Authentication
 Log in securely to access personalized features based on your role. Whether you're a host planning the wedding or a guest attending the event, I-DO's user authentication ensures a seamless and tailored experience for all users.
 
 ### User Roles
