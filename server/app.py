@@ -65,8 +65,8 @@ def wedding_list():
         return all_weddings, 200
     
     elif request.method == 'POST':
-        json_data = request.get_json()
-        new_wedding = Wedding(**json_data)
+        json_data = request.get_json() 
+        new_wedding = Wedding(**json_data) #whats the asterik read up
         db.session.add(new_wedding)
         db.session.commit()
         return new_wedding.to_dict(), 201
@@ -74,7 +74,7 @@ def wedding_list():
 @app.route('/weddings/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 def wedding_detail(id):
     wedding_detail = Wedding.query.get(id)
-    if not wedding_detail:
+    if not wedding_detail: #Error handling
         return {}, 404
     
     if request.method == 'GET':
