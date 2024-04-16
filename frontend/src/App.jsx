@@ -1,7 +1,7 @@
 import React from 'react';
-import Entertainment from  "./Entertainment"
-import './App.css';
-import VenueList from './VenueList'
+import Entertainment from  "./components/Entertainment"
+import VenueList from './components/VenueList'
+import './App.css'
 
 function App() {
   return (
