@@ -1,8 +1,8 @@
-"""initial migration
+"""empty message
 
-Revision ID: 0d2ecdf4d45f
+Revision ID: 78938be626f3
 Revises: 
-Create Date: 2024-04-15 12:55:18.035958
+Create Date: 2024-04-16 16:18:14.992243
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0d2ecdf4d45f'
+revision = '78938be626f3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,13 +21,16 @@ def upgrade():
     op.create_table('hosts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_hosts')),
+    sa.UniqueConstraint('name', name=op.f('uq_hosts_name'))
     )
     op.create_table('venues',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('address', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('price', sa.Integer(), nullable=True),
+    sa.Column('venue_picture', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_venues'))
     )
     op.create_table('weddings',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -36,7 +39,7 @@ def upgrade():
     sa.Column('date', sa.DateTime(), nullable=True),
     sa.Column('venue_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['venue_id'], ['venues.id'], name=op.f('fk_weddings_venue_id_venues')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_weddings'))
     )
     op.create_table('invites',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -45,7 +48,7 @@ def upgrade():
     sa.Column('host_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['host_id'], ['hosts.id'], name=op.f('fk_invites_host_id_hosts')),
     sa.ForeignKeyConstraint(['wedding_id'], ['weddings.id'], name=op.f('fk_invites_wedding_id_weddings')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_invites'))
     )
     # ### end Alembic commands ###
 

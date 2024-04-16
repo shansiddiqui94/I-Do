@@ -29,9 +29,16 @@ def create_weddings(venues):
             food=fake.word(),
             entertainment=fake.word(),
             date=fake.date_time_this_year(),
-            venue=fake.random_element(venues)
         )
         weddings.append(wedding)
+        # Add the wedding to the session before associating it with a venue
+        db.session.add(wedding)
+        # Associate the wedding with a random venue
+        venue = fake.random_element(venues)
+        wedding.venue = venue
+        # Ensure the venue is added to the session if it's not already there
+        if venue not in db.session:
+            db.session.add(venue)
     return weddings
 
 # Function to create dummy hosts
@@ -50,15 +57,16 @@ def create_invites(weddings, hosts):
     for _ in range(20):
         invite = Invite(
             guest_name=fake.name(),
-            wedding=fake.random_element(weddings),
-            host=fake.random_element(hosts)
         )
         invites.append(invite)
+        # Add the invite to the session before associating it with a wedding and host
+        db.session.add(invite)
+        # Associate the invite with a random wedding and host
+        invite.wedding = fake.random_element(weddings)
+        invite.host = fake.random_element(hosts)
     return invites
 
 # Main function to seed the database
-
-
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
@@ -67,11 +75,8 @@ if __name__ == '__main__':
         venues = create_venues(); db.session.add_all(venues); db.session.commit()
         weddings = create_weddings(venues)
         hosts = create_hosts()
-        db.session.add_all(weddings)
         db.session.add_all(hosts)
         db.session.commit()
         invites = create_invites(weddings, hosts)
-
-        
         db.session.add_all(invites)
         db.session.commit()
