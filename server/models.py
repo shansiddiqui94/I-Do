@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from sqlalchemy import MetaData
-from flask_bcrypt import Bcrypt
+# from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 from config import db
@@ -16,7 +16,7 @@ convention = {
 }
 
 db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
-bcrypt = Bcrypt()
+
 
 # Models go here!
 class Venue(db.Model, SerializerMixin):
