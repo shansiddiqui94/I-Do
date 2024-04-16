@@ -4,6 +4,7 @@
 # Remote library imports
 from flask import Flask, make_response, request
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 # Local imports
 from config import app, db
@@ -11,7 +12,8 @@ from config import app, db
 # Add your model imports
 from models import Venue, Wedding, Host, Invite
 
-
+app = Flask(__name__)
+CORS(app)
 # Views go here!
 
 # Venue Routes *
