@@ -7,15 +7,15 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 from config import db
 
-convention = {
-    "ix": "ix_%(column_0_label)s",
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-}
+# convention = {
+#     "ix": "ix_%(column_0_label)s",
+#     "uq": "uq_%(table_name)s_%(column_0_name)s",
+#     "ck": "ck_%(table_name)s_%(constraint_name)s",
+#     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+#     "pk": "pk_%(table_name)s"
+# }
 
-db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
+# db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 
 
 # Models go here!
@@ -43,14 +43,14 @@ class Wedding(db.Model, SerializerMixin):
     food = db.Column(db.String)
     entertainment = db.Column(db.String)
     date = db.Column(db.DateTime)
-    venue_id=db.Column(db.Integer, db.ForeignKey('venue.id'))
+    venue_id=db.Column(db.Integer, db.ForeignKey('venues.id'))
 
     #relationship
     invites = db.relationship('Invite', back_populates='wedding')
     venue = db.relationship('Venue', back_populates='weddings') #a venue can have multiple weddings. Wedding only has 1 venue
 
     #serialization
-    serialize_rules = ['-invites.wedding']
+    serialize_rules = ['-invites', '-venue.weddings',]
 
     def __repr__(self):
         return f"<Wedding {self.food}, {self.entertainment}, {self.date}>"
