@@ -1,10 +1,21 @@
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy import MetaData, DateTime
-from sqlalchemy.orm import validates
-
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
+from sqlalchemy import MetaData
+# from flask_bcrypt import Bcrypt
+from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 from config import db
+
+convention = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
+db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 
 
 # Models go here!
@@ -14,6 +25,9 @@ class Venue(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     address = db.Column(db.String)
+    price = db.Column(db.Integer, default=0)
+    venue_picture = db.Column(db.String)
+    
 
     #relationship
     weddings = db.relationship('Wedding', back_populates='venue')#a venue can have multiple weddings. Wedding only has 1 venue
@@ -29,7 +43,7 @@ class Wedding(db.Model, SerializerMixin):
     food = db.Column(db.String)
     entertainment = db.Column(db.String)
     date = db.Column(db.DateTime)
-    venue_id=db.Column(db.Integer, db.ForeignKey('venues.id'))
+    venue_id=db.Column(db.Integer, db.ForeignKey('venue.id'))
 
     #relationship
     invites = db.relationship('Invite', back_populates='wedding')
@@ -47,7 +61,7 @@ class Host(db.Model, SerializerMixin):
     __tablename__ = 'hosts'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)#can't be 2 hosts with same name
 
     #relationship
     invites = db.relationship('Invite', back_populates='host', cascade='all, delete-orphan')
@@ -57,6 +71,20 @@ class Host(db.Model, SerializerMixin):
 
     #serialization
     serialize_rules = ['-invites.host']
+
+    #ensure value of name is not empty and no duplicate
+    @validates('name')
+    def validate_name(self, key, name):
+        if len(name) == 0:
+            raise ValueError('invalid name')
+        
+        host_name = db.session.query(Host.id).filter_by(name = name).first()
+        if host_name is not None:
+            raise ValueError('name must be unique')
+        
+        return name
+        
+
 
     def __repr__(self):
         return f"<Restaurant {self.name}>"
