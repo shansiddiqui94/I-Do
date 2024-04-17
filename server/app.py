@@ -12,8 +12,6 @@ from config import app, db
 # Add your model imports
 from models import Venue, Wedding, Host, Invite
 
-app = Flask(__name__)
-CORS(app)
 # Views go here!
 
 # Venue Routes *
