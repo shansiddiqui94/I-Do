@@ -9,6 +9,7 @@ import MainContent from './components/MainContent.jsx';
 import Bullshit1 from './components/bullshit1.jsx';
 import Bullshit2 from './components/bullshit2.jsx';
 import Bullshit3 from './components/bullshit3.jsx';
+
 // import MainContent from './components/MainContent.jsx';
 
 // TODO:  App needs to contain the browser-router with the
@@ -46,8 +47,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Ben please pass us</h1>
+      <h1>I-DO</h1>
      <RouterProvider router={router}/>
+     <FrontPage />
     </div>
   );
 }

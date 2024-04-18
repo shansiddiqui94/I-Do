@@ -19,7 +19,7 @@ function Bullshit1() {
         //     </div>
         // </div>
         <>
-            <h1>this is some bullshit</h1>
+            <h1>Please Choose your desired venue</h1>
             <p>{currentPage}</p>
             <NavLink to="nextpage" onClick={() => {setCurrentPage("entertainment")}}>
                 NEXT!

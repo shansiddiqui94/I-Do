@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { NavLink, useOutletContext } from "react-router-dom";
 
 function VenueList() {
     const [venues, setVenues] = useState([]);
@@ -9,6 +10,25 @@ function VenueList() {
             .then(data => setVenues(data))
             .catch(error => console.error('Error fetching venues:', error));
     }, []);
+    function WeddingVenue() {
+        const [currentPage, setCurrentPage] = useOutletContext();
+        return (
+            // <div className="main-content-container">
+            //      <div className="overlay"></div>
+            //         <div className="main-content">
+             
+            //     </div>
+            // </div>
+            <>
+                <h1>Please Choose your desired venue</h1>
+                <p>{currentPage}</p>
+                <NavLink to="nextpage" onClick={() => {setCurrentPage("entertainment")}}>
+                    NEXT!
+                </NavLink>
+            </>
+        );
+    }
+    console.log(WeddingVenue)
 
     return (
         <div className="container mx-auto px-4">
@@ -27,4 +47,5 @@ function VenueList() {
 }
 
 export default VenueList;
+
 
