@@ -17,7 +17,6 @@ useEffect(() => {
   
   return (
     <div>
-      <h2>Entertainment Choices</h2>
       <form>
         {ent.map(item => (
           <div key={item.id}>
@@ -29,4 +28,4 @@ useEffect(() => {
     </div>
   );
 }
-export default Entertainment
+export default Entertainment;
