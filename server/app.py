@@ -21,23 +21,6 @@ def venue_list():
     return [venue.to_dict(rules=['-weddings']) for venue in venues], 200
 
 
-
-    # if request.method == 'GET':
-    #     all_venues = [location.to_dict(rules=['-invites']) for location in Venue.query.all()]
-        
-    #     return all_venues, 200
-    
-    # elif request.method == 'POST':
-    #     json_data = request.get_json()
-    #     new_venue = Venue()
-    #     for key, value in json_data.items():
-    #         setattr(new_venue, key, value)
-
-    #     db.session.add(new_venue)
-    #     db.session.commit()
-
-    #     return new_venue.to_dict(), 201
-
 @app.route('/venues/<int:id>', methods=['GET', 'DELETE'])
 def venue_detail(id):
     venue_detail = Venue.query.filter(Venue.id == id).first()
